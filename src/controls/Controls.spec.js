@@ -22,3 +22,20 @@ test("Has buttons for open/close and lock/unlock", () => {
 	expect(getByText(/open gate/i)).toBeTruthy();
 	expect(getByText(/unlock gate/i)).toBeTruthy();
 });
+
+test("Closed toggle button disabled if gate is locked", () => {
+	const { getByText, rerender } = render(<Controls />);
+
+	const props = { closed: true, locked: true };
+
+	const toggleLock = getByText(/lock gate/i);
+	const toggleOpen = getByText(/close gate/i);
+
+	expect(toggleLock.disabled).toBe(true);
+	expect(toggleOpen.disabled).toBe(false);
+
+	rerender(<Controls {...props} />);
+
+	expect(toggleLock.disabled).toBe(false);
+	expect(toggleOpen.disabled).toBe(true);
+});
